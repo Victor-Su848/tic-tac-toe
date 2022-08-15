@@ -94,12 +94,20 @@ main button {
     height: 2rem;
     text-align: center;
 
-    border:1px solid red;
+    
     border-radius: 15px;
 
     display: flex;
     justify-content: center;
     align-items: center;
+
+    
+}
+.in-turn {
+    border:1px solid blue;
+}
+.out-of-turn {
+    border:1px solid red;
 }
 .player-displays .display:last-child {
     margin-left: 15px;

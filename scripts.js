@@ -15,9 +15,9 @@ let gameBoard = (function () {
         //check if tile is not empty
         if (!_isEmpty(index)) return;
         //determine player turn
-        let currentPlayer = _currentPlayer();
+        let player = currentPlayer();
         //add to the board
-        _add(index, currentPlayer.letter);
+        _add(index, player.letter);
         _updateContainers(index);
         displayController.display('#board', board);
 
@@ -26,13 +26,14 @@ let gameBoard = (function () {
         if(_checkWinner() !== undefined) {
             alert(_checkWinner());
         }
+        
     }
     //return true if board tile is empty
     function _isEmpty(index) {
         return (board[index].length === 0 ? true : false);
     }
     //return the player who has the current turn
-    function _currentPlayer() {
+    function currentPlayer() {
         if (player1.turn) {
             player1.turn = false;
             player2.turn = true;
@@ -188,6 +189,7 @@ let gameBoard = (function () {
     return {
         board,
         makePlacement,
+        currentPlayer,
     }
 })();
 
@@ -204,7 +206,7 @@ let displayController = (function (doc) {
     function display(selector, array) {
         const board = doc.querySelector(selector);
         _clearBoard(board);
-
+        _showCurrentPlayer();
         for (let i = 0; i < array.length; i++) {
             let tile = doc.createElement('div');
             tile.classList.add('tile');
@@ -228,6 +230,32 @@ let displayController = (function (doc) {
         console.log("_clearBoard private method called");
         while (parent.firstChild) {
             parent.removeChild(parent.firstChild);
+        }
+    }
+
+    //highlights the current player
+    function _showCurrentPlayer() {
+        console.log('_showCurrentPlayer method called');
+        const player1Display = doc.querySelector('#player1');
+        const player2Display = doc.querySelector('#player2');
+
+        //it is player 1's turn
+        if(player1.turn) {
+            console.log('player 1 turn');
+            player1Display.classList.add('in-turn');
+            player1Display.classList.remove('out-of-turn');
+
+            player2Display.classList.add('out-of-turn');
+            player2Display.classList.remove('in-turn');
+        } 
+        //it is player 2's turn
+        else {
+            console.log('player 2 turn');
+            player1Display.classList.add('out-of-turn');
+            player1Display.classList.remove('in-turn');
+
+            player2Display.classList.add('in-turn');
+            player2Display.classList.remove('out-of-turn');
         }
     }
 
