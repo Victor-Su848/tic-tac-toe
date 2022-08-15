@@ -1,5 +1,5 @@
 //game board module
-let gameBoard = (function () {
+let gameBoard = (function (doc) {
     let board = ['', '', '',
         '', '', '',
         '', '', ''];
@@ -23,11 +23,32 @@ let gameBoard = (function () {
 
         //check for winner
         console.log(_checkWinner());
-        if(_checkWinner() !== undefined) {
+        if (_checkWinner() !== undefined) {
             alert(_checkWinner());
         }
-        
     }
+
+    //adds event listener to restart button
+    function reset() {
+
+
+
+        console.log('reset method called');
+        board = ['', '', '',
+            '', '', '',
+            '', '', ''];
+        _rowContainer = [0, 0, 0];
+        _columnContainer = [0, 0, 0];
+        _diagonalContainer = [0, 0, 0];
+        _crossDiagonalContainer = [0, 0, 0];
+        player1.turn = true;
+        player2.turn = false;
+        displayController.display('#board', board);
+
+    }
+
+
+
     //return true if board tile is empty
     function _isEmpty(index) {
         return (board[index].length === 0 ? true : false);
@@ -107,21 +128,21 @@ let gameBoard = (function () {
             if (_rowContainer[i] === 3) {
                 switch (i) {
                     case 0:
-                        if(board[0] === board[1] && board[1] === board[2]) {
+                        if (board[0] === board[1] && board[1] === board[2]) {
                             console.log(`winner on row ${i}`);
-                            return (board[0] === 'X' ? player1 : player2) 
+                            return (board[0] === 'X' ? player1 : player2)
                         }
                         break;
                     case 1:
-                        if(board[3] === board[4] && board[4] === board[5]) {
+                        if (board[3] === board[4] && board[4] === board[5]) {
                             console.log(`winner on row ${i}`);
-                            return (board[3] === 'X' ? player1 : player2) 
+                            return (board[3] === 'X' ? player1 : player2)
                         }
                         break;
                     case 2:
-                        if(board[6] === board[7] && board[7] === board[8]) {
+                        if (board[6] === board[7] && board[7] === board[8]) {
                             console.log(`winner on row ${i}`);
-                            return (board[6] === 'X' ? player1 : player2) 
+                            return (board[6] === 'X' ? player1 : player2)
                         }
                         break;
                     default:
@@ -135,21 +156,21 @@ let gameBoard = (function () {
             if (_columnContainer[i] === 3) {
                 switch (i) {
                     case 0:
-                        if(board[0] === board[3] && board[3] === board[6]) {
+                        if (board[0] === board[3] && board[3] === board[6]) {
                             console.log(`winner on col ${i}`);
-                            return (board[0] === 'X' ? player1 : player2) 
+                            return (board[0] === 'X' ? player1 : player2)
                         }
                         break;
                     case 1:
-                        if(board[1] === board[4] && board[4] === board[7]) {
+                        if (board[1] === board[4] && board[4] === board[7]) {
                             console.log(`winner on col ${i}`);
-                            return (board[1] === 'X' ? player1 : player2) 
+                            return (board[1] === 'X' ? player1 : player2)
                         }
                         break;
                     case 2:
-                        if(board[2] === board[5] && board[5] === board[8]) {
+                        if (board[2] === board[5] && board[5] === board[8]) {
                             console.log(`winner on col ${i}`);
-                            return (board[2] === 'X' ? player1 : player2) 
+                            return (board[2] === 'X' ? player1 : player2)
                         }
                         break;
                     default:
@@ -159,39 +180,39 @@ let gameBoard = (function () {
         }
         //check diagonal
         let diagonalSum = 0;
-        for(let i = 0; i < _diagonalContainer.length; i++) {
+        for (let i = 0; i < _diagonalContainer.length; i++) {
             diagonalSum += _diagonalContainer[i];
         }
-        if(diagonalSum === 3) {
-            if(board[0] === 'X' && board[4] === 'X' && board[8] === 'X') return player1;
-            else if(board[0] === 'O' && board[4] === 'O' && board[8] === 'O') return player2;
+        if (diagonalSum === 3) {
+            if (board[0] === 'X' && board[4] === 'X' && board[8] === 'X') return player1;
+            else if (board[0] === 'O' && board[4] === 'O' && board[8] === 'O') return player2;
         }
         //check opposite diagonal
         let crossDiagonalSum = 0;
-        for(let i = 0; i < _crossDiagonalContainer.length; i++) {
+        for (let i = 0; i < _crossDiagonalContainer.length; i++) {
             crossDiagonalSum += _crossDiagonalContainer[i];
         }
-        if(crossDiagonalSum === 3) {
-            if(board[2] === 'X' && board[4] === 'X' && board[6] === 'X') return player1;
-            else if(board[2] === 'O' && board[4] === 'O' && board[6] === 'O') return player2;
+        if (crossDiagonalSum === 3) {
+            if (board[2] === 'X' && board[4] === 'X' && board[6] === 'X') return player1;
+            else if (board[2] === 'O' && board[4] === 'O' && board[6] === 'O') return player2;
         }
         //check for a tie and return false if there's no tie
         let rowSum = 0;
-        for(let i = 0; i < _rowContainer.length; i++) {
+        for (let i = 0; i < _rowContainer.length; i++) {
             rowSum += _rowContainer[i];
         }
         let columnSum = 0;
-        for(let i = 0; i < _columnContainer.length; i++) {
+        for (let i = 0; i < _columnContainer.length; i++) {
             columnSum += _columnContainer[i];
         }
-        if(rowSum + columnSum === 18) return 'tie';
+        if (rowSum + columnSum === 18) return 'tie';
     }
     return {
         board,
         makePlacement,
-        currentPlayer,
+        reset,
     }
-})();
+})(document || documentMock);
 
 //document mock in case DOM simulator not available
 const documentMock = (() => ({
@@ -210,10 +231,20 @@ let displayController = (function (doc) {
         for (let i = 0; i < array.length; i++) {
             let tile = doc.createElement('div');
             tile.classList.add('tile');
-            tile.textContent = array[i];
+
+            let para = doc.createElement('p');
+            para.textContent = array[i];
+            tile.append(para);
             tile = _addEventListener(i, tile);
             board.append(tile);
         }
+    }
+
+    function implementRestart(selector) {
+        const btn = doc.querySelector(selector);
+        btn.addEventListener('click', function () {
+            gameBoard.reset();
+        });
     }
 
     //adds event listener for putting letter on board
@@ -240,14 +271,14 @@ let displayController = (function (doc) {
         const player2Display = doc.querySelector('#player2');
 
         //it is player 1's turn
-        if(player1.turn) {
+        if (player1.turn) {
             console.log('player 1 turn');
             player1Display.classList.add('in-turn');
             player1Display.classList.remove('out-of-turn');
 
             player2Display.classList.add('out-of-turn');
             player2Display.classList.remove('in-turn');
-        } 
+        }
         //it is player 2's turn
         else {
             console.log('player 2 turn');
@@ -261,6 +292,7 @@ let displayController = (function (doc) {
 
     return {
         display,
+        implementRestart,
     }
 })(document || documentMock);
 
@@ -275,4 +307,5 @@ function player(turn, letter) {
 let player1 = player(true, 'X');
 let player2 = player(false, 'O');
 
+displayController.implementRestart('#restart-btn');
 displayController.display('#board', gameBoard.board);
